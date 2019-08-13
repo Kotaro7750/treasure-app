@@ -15,7 +15,6 @@ func AllArticle(db *sqlx.DB) ([]model.Article, error) {
 	return a, nil
 }
 
-//ここにcommentを持ってくる
 func FindArticle(db *sqlx.DB, id int64) (*model.Article, error) {
 	a := model.Article{}
 	if err := db.Get(&a, `
@@ -23,6 +22,33 @@ SELECT id, title, body, user_id FROM article WHERE id = ?
 `, id); err != nil {
 		return nil, err
 	}
+	return &a, nil
+}
+
+func FindArticleWithComment(db *sqlx.DB, id int64) (*model.ArticleWithComment, error) {
+	a := model.ArticleWithComment{}
+	article := model.Article{}
+	comments := []model.Comment{}
+	if err := db.Get(&article, `SELECT id, title, body, user_id FROM article WHERE id = ?`, id); err != nil {
+		return nil, err
+	}
+
+	rows, err := db.Queryx("SELECT id, user_id, article_id, body FROM comment WHERE article_id = ?", id)
+	if err != nil {
+		return nil, err
+	}
+
+	var comment model.Comment
+	for rows.Next() {
+		err := rows.StructScan(&comment)
+		if err != nil {
+			return nil, err
+		}
+		comments = append(comments, comment)
+	}
+
+	a.Article = article
+	a.Comment = comments
 	return &a, nil
 }
 

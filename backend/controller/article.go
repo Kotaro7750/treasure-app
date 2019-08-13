@@ -33,18 +33,21 @@ func (a *Article) Index(w http.ResponseWriter, r *http.Request) (int, interface{
 }
 
 func (a *Article) Show(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
+	//リクエストからパラメータを抽出
 	vars := mux.Vars(r)
 	id, ok := vars["id"]
 	if !ok {
 		return http.StatusBadRequest, nil, &httputil.HTTPError{Message: "invalid path parameter"}
 	}
 
+	//パラメータをint64に変更
 	aid, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
 		return http.StatusBadRequest, nil, err
 	}
 
-	article, err := repository.FindArticle(a.dbx, aid)
+	//レポジトリから記事一覧を取得
+	article, err := repository.FindArticleWithComment(a.dbx, aid)
 	if err != nil && err == sql.ErrNoRows {
 		return http.StatusNotFound, nil, err
 	} else if err != nil {
