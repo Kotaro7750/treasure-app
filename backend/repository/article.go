@@ -15,6 +15,7 @@ func AllArticle(db *sqlx.DB) ([]model.Article, error) {
 	return a, nil
 }
 
+//ここにcommentを持ってくる
 func FindArticle(db *sqlx.DB, id int64) (*model.Article, error) {
 	a := model.Article{}
 	if err := db.Get(&a, `
@@ -56,4 +57,13 @@ DELETE FROM article WHERE id = ?
 	}
 	defer stmt.Close()
 	return stmt.Exec(id)
+}
+
+//tag
+func TagArticle(db *sqlx.DB, tagID int64) ([]model.Article, error) {
+	a := make([]model.Article, 0)
+	if err := db.Select(&a, `SELECT article.id, article.title, article.body, article.user_id FROM article INNE JOIN article_tag ON article.id = article_tag.article_id WHERE article_tag.tag_id = ?`); err != nil {
+		return nil, err
+	}
+	return a, nil
 }

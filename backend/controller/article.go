@@ -126,3 +126,23 @@ func (a *Article) Destroy(w http.ResponseWriter, r *http.Request) (int, interfac
 
 	return http.StatusNoContent, nil, nil
 }
+
+func (a *Article) SearchByTag(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
+	vars := mux.Vars(r)
+	id, ok := vars["tag_id"]
+	if !ok {
+		return http.StatusBadRequest, nil, &httputil.HTTPError{Message: "invalid path parameter"}
+	}
+
+	tid, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return http.StatusBadRequest, nil, err
+	}
+
+	//今はコントローラーを介していない
+	articles, err := repository.TagArticle(a.dbx, tid)
+	if err != nil {
+		return http.StatusInternalServerError, nil, err
+	}
+	return http.StatusOK, articles, nil
+}
