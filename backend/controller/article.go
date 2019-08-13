@@ -60,6 +60,12 @@ func (a *Article) Create(w http.ResponseWriter, r *http.Request) (int, interface
 		return http.StatusBadRequest, nil, err
 	}
 
+	u, err := httputil.GetUserFromContext(r.Context())
+	if err != nil {
+		return http.StatusInternalServerError, nil, err
+	}
+	newArticle.UserID = &u.ID
+
 	articleService := service.NewArticleService(a.dbx)
 	id, err := articleService.Create(newArticle)
 	if err != nil {
