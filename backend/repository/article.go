@@ -88,8 +88,17 @@ DELETE FROM article WHERE id = ?
 //tag
 func TagArticle(db *sqlx.DB, tagID int64) ([]model.Article, error) {
 	a := make([]model.Article, 0)
-	if err := db.Select(&a, `SELECT article.id, article.title, article.body, article.user_id FROM article INNE JOIN article_tag ON article.id = article_tag.article_id WHERE article_tag.tag_id = ?`); err != nil {
+	rows, err := db.Queryx(`SELECT article.id, article.title, article.body, article.user_id FROM article INNER JOIN article_tag ON article.id = article_tag.article_id WHERE article_tag.tag_id = ?`, tagID)
+	if err != nil {
 		return nil, err
+	}
+	var article model.Article
+	for rows.Next() {
+		err := rows.StructScan(&article)
+		if err != nil {
+			return nil, err
+		}
+		a = append(a, article)
 	}
 	return a, nil
 }

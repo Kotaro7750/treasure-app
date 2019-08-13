@@ -130,7 +130,7 @@ func (a *Article) Destroy(w http.ResponseWriter, r *http.Request) (int, interfac
 	return http.StatusNoContent, nil, nil
 }
 
-func (a *Article) SearchByTag(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
+func (a *Article) IndexByTag(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
 	vars := mux.Vars(r)
 	id, ok := vars["tag_id"]
 	if !ok {

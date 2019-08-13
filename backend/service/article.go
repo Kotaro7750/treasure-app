@@ -80,3 +80,7 @@ func (a *Article) Create(newArticle *model.Article) (int64, error) {
 	}
 	return createdId, nil
 }
+
+func (a *Article) IndexByTag(tagID int64) ([]model.Article, error) {
+	return nil, nil
+}

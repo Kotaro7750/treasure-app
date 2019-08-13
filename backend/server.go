@@ -90,7 +90,7 @@ func (s *Server) Route() *mux.Router {
 	//コメント
 	r.Methods(http.MethodPost).Path("/articles/{article_id}/comments").Handler(authChain.Then(AppHandler{commentController.Create}))
 	//タグ
-	r.Methods(http.MethodGet).Path("/articles/tag/{tag_id}").Handler(commonChain.Then(AppHandler{articleController.SearchByTag}))
+	r.Methods(http.MethodGet).Path("/articles/tag/{tag_id}").Handler(commonChain.Then(AppHandler{articleController.IndexByTag}))
 
 	r.PathPrefix("").Handler(commonChain.Then(http.StripPrefix("/img", http.FileServer(http.Dir("./img")))))
 	return r

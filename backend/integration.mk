@@ -9,6 +9,8 @@ ARTICLE_ID:=1
 ARTICLE_TITLE:=title
 ARTICLE_BODY:=body
 
+TAG_ID:=1
+
 create-token:
 	go run ./cmd/customtoken/main.go $(UID) $(TOKEN_FILE)
 
@@ -32,6 +34,10 @@ req-articles-delete:
 	
 req-comments-post:
 	curl -v -XPOST -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles/$(ARTICLE_ID)/comments -d '{"body": "$(ARTICLE_BODY)"}'
+
+req-tag-get:
+	curl -v $(HOST):$(PORT)/articles/tag/$(TAG_ID)
+
 
 req-public:
 	curl -v $(HOST):$(PORT)/public
