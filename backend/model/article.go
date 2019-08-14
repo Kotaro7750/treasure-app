@@ -7,7 +7,8 @@ type Article struct {
 	Body   string `db:"body" json:"body"`
 }
 
-type ArticleWithComment struct {
+type ArticleDetail struct {
 	Article Article   `json:"article"`
+	Tag     []string  `json:"tag"`
 	Comment []Comment `json:"comment"`
 }

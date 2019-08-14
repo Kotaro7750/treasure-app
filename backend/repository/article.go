@@ -25,15 +25,10 @@ SELECT id, title, body, user_id FROM article WHERE id = ?
 	return &a, nil
 }
 
-func FindArticleWithComment(db *sqlx.DB, id int64) (*model.ArticleWithComment, error) {
-	a := model.ArticleWithComment{}
-	article := model.Article{}
+func FindComment(db *sqlx.DB, articleID int64) ([]model.Comment, error) {
 	comments := []model.Comment{}
-	if err := db.Get(&article, `SELECT id, title, body, user_id FROM article WHERE id = ?`, id); err != nil {
-		return nil, err
-	}
 
-	rows, err := db.Queryx("SELECT id, user_id, article_id, body FROM comment WHERE article_id = ?", id)
+	rows, err := db.Queryx("SELECT id, user_id, article_id, body FROM comment WHERE article_id = ?", articleID)
 	if err != nil {
 		return nil, err
 	}
@@ -47,9 +42,8 @@ func FindArticleWithComment(db *sqlx.DB, id int64) (*model.ArticleWithComment, e
 		comments = append(comments, comment)
 	}
 
-	a.Article = article
-	a.Comment = comments
-	return &a, nil
+	return comments, nil
+
 }
 
 func CreateArticle(db *sqlx.Tx, a *model.Article) (sql.Result, error) {

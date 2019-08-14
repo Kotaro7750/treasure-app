@@ -17,6 +17,25 @@ func NewArticleService(db *sqlx.DB) *Article {
 	return &Article{db}
 }
 
+func (a *Article) Show(articleID int64) (*model.ArticleDetail, error) {
+	article, err := repository.FindArticle(a.db, articleID)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed find article")
+	}
+
+	comment, err := repository.FindComment(a.db, articleID)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed find comment")
+	}
+
+	articleDetail := model.ArticleDetail{}
+	articleDetail.Article = *article
+	articleDetail.Comment = comment
+	//tagはまだ
+
+	return &articleDetail, nil
+}
+
 func (a *Article) Update(id int64, newArticle *model.Article) error {
 	_, err := repository.FindArticle(a.db, id)
 	if err != nil {
