@@ -1,64 +1,70 @@
 <template>
   <div v-if="state.user === null">
-    <button v-on:click="login">Please login</button>
+    <button v-on:click="login">ログイン</button>
   </div>
 
   <div v-else>
     <div>{{state.message}}</div>
 
     <p style="color:red;">{{state.errorMessage}}</p>
-    <button v-on:click="getPrivateMessage">Get Private Message</button>
+    <button v-on:click="getPrivateMessage">認証情報</button>
 
     <div>
       <input type="number" v-model="article.id" />
-      <button v-on:click="showArticle">Show Article</button>
+      <button v-on:click="showArticle">記事を見る</button>
     </div>
 
-    <div>
+    <p>
       <input type="text" v-model="newArticle.title" />
       <input type="text" v-model="newArticle.body" />
-      <button v-on:click="createArticle">Create Article</button>
-    </div>
+      <button v-on:click="createArticle">記事を作成する</button>
+    </p>
 
-    <button v-on:click="logout">Logout</button>
+    <button v-on:click="logout">ログアウト</button>
+    <button v-on:click="getArticleList">記事一覧</button>
 
-    <h1>記事</h1>
-    <Article v-bind:article="article" v-bind:tags="tags" />
+    <ArticleDetail v-bind:article="article" v-if="state.isFocusedArticle" />
 
-    <dir v-if="comments.length != 0">
-      <h1>コメント</h1>
-      <Comment v-for="comment in comments" v-bind:key="comment.id" v-bind:comment="comment" />
-    </dir>
+    <ArticleList v-bind:articles="article_list" v-else />
   </div>
 </template>
 
 <script>
 import firebase from "../firebase";
-import { getPrivateMessage, showArticle, createArticle } from "../api";
+import {
+  getPrivateMessage,
+  showArticle,
+  createArticle,
+  getArticleList
+} from "../api";
 
-import Article from "./Article.vue";
-import Comment from "./Comment.vue";
+import ArticleDetail from "./ArticleDetail/ArticleDetail.vue";
+import ArticleList from "./ArticleList.vue";
 
 export default {
-  components: { Article, Comment },
+  components: { ArticleDetail, ArticleList },
   data() {
     return {
       state: {
         user: null,
         message: "",
-        errorMessage: ""
+        errorMessage: "",
+        isFocusedArticle: false
       },
       article: {
-        id: 0,
-        title: "nothing",
-        body: "nothing"
+        content: {
+          id: 0,
+          title: "nothing",
+          body: "nothing"
+        },
+        comments: [],
+        tags: []
       },
+      article_list: [],
       newArticle: {
         title: "",
         body: ""
-      },
-      comments: [],
-      tags: [{ id: 0, name: "なし" }]
+      }
     };
   },
   created() {
@@ -95,11 +101,10 @@ export default {
     showArticle: function() {
       showArticle(Number(this.article.id))
         .then(resp => {
-          this.article.title = resp.article.title;
-          this.article.body = resp.article.body;
-          this.tags = resp.tag;
-          this.comments = resp.comment;
-          //this.appendComment(resp.comment);
+          this.state.isFocusedArticle = true;
+          this.article.content = resp.article;
+          this.article.tags = resp.tag;
+          this.article.comments = resp.comment;
         })
         .catch(error => {
           this.state.errorMessage = error.toString();
@@ -117,6 +122,16 @@ export default {
         })
         .then(resp => {
           this.state.message = resp;
+        })
+        .catch(error => {
+          this.state.errorMessage = error.toString();
+        });
+    },
+    getArticleList: function() {
+      getArticleList()
+        .then(resp => {
+          this.state.isFocusedArticle = false;
+          this.article_list = resp;
         })
         .catch(error => {
           this.state.errorMessage = error.toString();

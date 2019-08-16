@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h2>ユーザ:{{ comment.user_id }}</h2>
-    <h2>内容:{{ comment.body }}</h2>
+    <h4>ユーザ:{{ comment.user_id }}</h4>
+    <h4>内容:{{ comment.body }}</h4>
   </div>
 </template>
 
