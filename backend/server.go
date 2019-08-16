@@ -93,6 +93,7 @@ func (s *Server) Route() *mux.Router {
 	//タグ
 	r.Methods(http.MethodGet).Path("/articles/tag/{tag_id}").Handler(commonChain.Then(AppHandler{articleController.IndexByTag}))
 	//二郎
+	r.Methods(http.MethodGet).Path("/jiros").Handler(commonChain.Then(AppHandler{jiroController.Index}))
 	r.Methods(http.MethodGet).Path("/jiros/{id}").Handler(commonChain.Then(AppHandler{jiroController.Show}))
 
 	r.PathPrefix("").Handler(commonChain.Then(http.StripPrefix("/img", http.FileServer(http.Dir("./img")))))

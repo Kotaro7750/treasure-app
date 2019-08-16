@@ -40,6 +40,9 @@ req-comments-post:
 req-tag-get:
 	curl -v $(HOST):$(PORT)/articles/tag/$(TAG_ID)
 
+req-jiros:
+	curl -v $(HOST):$(PORT)/jiros
+
 req-jiro-get:
 	curl -v $(HOST):$(PORT)/jiros/$(JIRO_ID)
 

@@ -15,7 +15,7 @@ func NewJiroService(db *sqlx.DB) *Jiro {
 	return &Jiro{db}
 }
 
-func (j *Jiro) Show(jiroID int64) (*model.Jiro, error) {
+func (j *Jiro) Show(jiroID int64) (*model.DetailedJiro, error) {
 	jiro, err := repository.FindJiro(j.db, jiroID)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed find jiro")
