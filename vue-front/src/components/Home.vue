@@ -9,13 +9,22 @@
           <b-nav-item v-on:click="login">ログイン</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav v-else>
-          <b-nav-item v-on:click="logout">サインアウト</b-nav-item>
+          <b-nav-item v-on:click="logout">ログアウト</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
     </b-navbar>
 
     <div v-if="state.user === null">
-      <img src="<%= BASE_URL %>jiro.JPG" alt="ラーメン296" title="ラーメン296" />
+      <p></p>
+      <img
+        src="../../public/jiro.jpg"
+        alt="ラーメン296"
+        title="ラーメン296"
+        width="30%"
+        height="30%"
+        class="logo offset-lg-4"
+      />
+      <h1 class="offset-lg-4">ラーメン二郎 is God!!</h1>
     </div>
 
     <div v-else>
