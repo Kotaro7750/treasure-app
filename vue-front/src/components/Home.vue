@@ -1,31 +1,46 @@
 <template>
-  <div v-if="state.user === null">
-    <button v-on:click="login">ログイン</button>
-  </div>
+  <div>
+    <b-navbar toggleable="lg" type="light" variant="warning">
+      <b-navbar-brand to="/">ラーメン二郎 Treasure店</b-navbar-brand>
+      <b-navbar-toggle target="nav-collapse" right></b-navbar-toggle>
 
-  <div v-else>
-    <div>{{state.message}}</div>
+      <b-collapse id="nav-collapse" is-nav>
+        <b-navbar-nav v-if="state.user === null">
+          <b-nav-item v-on:click="login">ログイン</b-nav-item>
+        </b-navbar-nav>
+        <b-navbar-nav v-else>
+          <b-nav-item v-on:click="logout">サインアウト</b-nav-item>
+        </b-navbar-nav>
+      </b-collapse>
+    </b-navbar>
 
-    <p style="color:red;">{{state.errorMessage}}</p>
-    <button v-on:click="getPrivateMessage">認証情報</button>
-
-    <div>
-      <input type="number" v-model="article.id" />
-      <button v-on:click="showArticle">記事を見る</button>
+    <div v-if="state.user === null">
+      <img src="<%= BASE_URL %>jiro.JPG" alt="ラーメン296" title="ラーメン296" />
     </div>
 
-    <p>
-      <input type="text" v-model="newArticle.title" />
-      <input type="text" v-model="newArticle.body" />
-      <button v-on:click="createArticle">記事を作成する</button>
-    </p>
+    <div v-else>
+      <div>{{state.message}}</div>
 
-    <button v-on:click="logout">ログアウト</button>
-    <button v-on:click="getArticleList">記事一覧</button>
+      <p style="color:red;">{{state.errorMessage}}</p>
+      <button v-on:click="getPrivateMessage">認証情報</button>
 
-    <ArticleDetail v-bind:article="article" v-if="state.isFocusedArticle" />
+      <div>
+        <input type="number" v-model="article.id" />
+        <button v-on:click="showArticle">記事を見る</button>
+      </div>
 
-    <ArticleList v-bind:articles="article_list" v-else />
+      <p>
+        <input type="text" v-model="newArticle.title" />
+        <input type="text" v-model="newArticle.body" />
+        <button v-on:click="createArticle">記事を作成する</button>
+      </p>
+
+      <button v-on:click="getArticleList">記事一覧</button>
+
+      <ArticleDetail v-bind:article="article" v-if="state.isFocusedArticle" />
+
+      <ArticleList v-bind:articles="article_list" v-else />
+    </div>
   </div>
 </template>
 
