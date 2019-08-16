@@ -24,7 +24,7 @@ CREATE TABLE article_tag
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- +goose Down
+DROP TABLE article_tag;
 DELETE FROM tag;
 DROP TABLE tag;
 
-DROP TABLE article_tag;

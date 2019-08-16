@@ -65,6 +65,7 @@ export default {
     });
   },
   methods: {
+    //auth
     getPrivateMessage: function() {
       this.state.user
         .getIdToken()
@@ -84,11 +85,18 @@ export default {
     logout: function() {
       firebase.logout();
     },
+    //article
     showArticle: function() {
-      showArticle(Number(this.article.id)).then(resp => {
-        this.article.title = resp.article.title;
-        this.article.body = resp.article.body;
-      });
+      showArticle(Number(this.article.id))
+        .then(resp => {
+          this.article.title = resp.article.title;
+          this.article.body = resp.article.body;
+          this.state.message = resp.comment;
+          this.appendComment(resp.comment);
+        })
+        .catch(error => {
+          this.state.errorMessage = error.toString();
+        });
     },
     createArticle: function() {
       this.state.user
@@ -106,6 +114,20 @@ export default {
         .catch(error => {
           this.state.errorMessage = error.toString();
         });
+    },
+    //comment
+    appendComment: function(comments) {
+      try {
+        let commentsJSON = JSON.parse(comments);
+
+        this.comments = [];
+
+        for (let i = 0, len = commentsJSON.length; i < len; i++) {
+          this.comments.push(commentsJSON[i]);
+        }
+      } catch (error) {
+        throw error;
+      }
     }
   }
 };
