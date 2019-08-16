@@ -25,3 +25,35 @@ INSERT INTO tag (id, name) VALUES (?, ?)
 	defer stmt.Close()
 	return stmt.Exec(t.ID, t.Name)
 }
+
+func AppendTag(db *sqlx.Tx, articleID int64, tagID int64) (sql.Result, error) {
+	stmt, err := db.Prepare(`
+INSERT INTO article_tag (article_id, tag_id) VALUES (?, ?)
+`)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	return stmt.Exec(articleID, tagID)
+}
+
+func FindTagOfArticle(db *sqlx.DB, articleID int64) ([]model.Tag, error) {
+	tags := []model.Tag{}
+
+	rows, err := db.Queryx("SELECT article_tag.id, tag.name AS name FROM tag INNER JOIN article_tag ON tag.id = article_tag.tag_id WHERE article_id = ?", articleID)
+	if err != nil {
+		return nil, err
+	}
+
+	var tag model.Tag
+	for rows.Next() {
+		err := rows.StructScan(&tag)
+		if err != nil {
+			return nil, err
+		}
+		tags = append(tags, tag)
+	}
+
+	return tags, nil
+
+}

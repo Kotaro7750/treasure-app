@@ -14,6 +14,6 @@ type ArticleCreate struct {
 
 type ArticleDetail struct {
 	Article Article   `json:"article"`
-	Tag     []string  `json:"tag"`
+	Tag     []Tag     `json:"tag"`
 	Comment []Comment `json:"comment"`
 }

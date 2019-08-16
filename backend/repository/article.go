@@ -25,27 +25,6 @@ SELECT id, title, body, user_id FROM article WHERE id = ?
 	return &a, nil
 }
 
-func FindComment(db *sqlx.DB, articleID int64) ([]model.Comment, error) {
-	comments := []model.Comment{}
-
-	rows, err := db.Queryx("SELECT id, user_id, article_id, body FROM comment WHERE article_id = ?", articleID)
-	if err != nil {
-		return nil, err
-	}
-
-	var comment model.Comment
-	for rows.Next() {
-		err := rows.StructScan(&comment)
-		if err != nil {
-			return nil, err
-		}
-		comments = append(comments, comment)
-	}
-
-	return comments, nil
-
-}
-
 func CreateArticle(db *sqlx.Tx, a *model.Article) (sql.Result, error) {
 	stmt, err := db.Prepare(`
 INSERT INTO article (title, body, user_id) VALUES (?, ?, ?)
@@ -55,17 +34,6 @@ INSERT INTO article (title, body, user_id) VALUES (?, ?, ?)
 	}
 	defer stmt.Close()
 	return stmt.Exec(a.Title, a.Body, a.UserID)
-}
-
-func AppendTag(db *sqlx.Tx,articleID int64, tagID int64) (sql.Result, error) {
-	stmt, err := db.Prepare(`
-INSERT INTO article_tag (article_id, tag_id) VALUES (?, ?)
-`)
-	if err != nil {
-		return nil, err
-	}
-	defer stmt.Close()
-	return stmt.Exec(articleID,tagID)
 }
 
 func UpdateArticle(db *sqlx.Tx, id int64, a *model.Article) (sql.Result, error) {

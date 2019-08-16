@@ -23,15 +23,19 @@ func (a *Article) Show(articleID int64) (*model.ArticleDetail, error) {
 		return nil, errors.Wrap(err, "failed find article")
 	}
 
-	comment, err := repository.FindComment(a.db, articleID)
+	comment, err := repository.FindCommentOfArticle(a.db, articleID)
 	if err != nil {
 		return nil, errors.Wrap(err, "failed find comment")
 	}
 
+	tag, err := repository.FindTagOfArticle(a.db, articleID)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed find tag")
+	}
 	articleDetail := model.ArticleDetail{}
 	articleDetail.Article = *article
 	articleDetail.Comment = comment
-	//tagはまだ
+	articleDetail.Tag = tag
 
 	return &articleDetail, nil
 }
