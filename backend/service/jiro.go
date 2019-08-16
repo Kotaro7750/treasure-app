@@ -23,3 +23,15 @@ func (j *Jiro) Show(jiroID int64) (*model.JiroDetail, error) {
 
 	return jiro, nil
 }
+
+func (j *Jiro) Nearest(jiroNearest model.JiroNearest) (*model.JiroNearest, error) {
+	//本当ならここでGoogleMapAPIとかで検索
+	jiro, err := repository.NearestJiro(j.db, jiroNearest.Position)
+	if err != nil {
+		return nil, errors.Wrap(err, "failed find jiro")
+	}
+	jiroNearest.Jiro = *jiro
+	jiroNearest.Route = "ずっとまっすぐ"
+
+	return &jiroNearest, nil
+}

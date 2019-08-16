@@ -53,6 +53,9 @@ req-jiros:
 req-jiro-get:
 	curl -v $(HOST):$(PORT)/jiros/$(JIRO_ID)
 
+req-jiro-nearest:
+	curl -v -XPOST -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/jiros/nearest -d '{"position":"現在位置"}'
+
 req-public:
 	curl -v $(HOST):$(PORT)/public
 

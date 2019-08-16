@@ -1,12 +1,14 @@
 package controller
 
 import (
+	"encoding/json"
 	"net/http"
 	"strconv"
 
 	"github.com/gorilla/mux"
 	"github.com/jmoiron/sqlx"
 	"github.com/voyagegroup/treasure-app/httputil"
+	"github.com/voyagegroup/treasure-app/model"
 	"github.com/voyagegroup/treasure-app/repository"
 	"github.com/voyagegroup/treasure-app/service"
 )
@@ -45,4 +47,19 @@ func (j *Jiro) Show(w http.ResponseWriter, r *http.Request) (int, interface{}, e
 	}
 
 	return http.StatusCreated, jiro, nil
+}
+
+func (j *Jiro) Nearest(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
+	nearestJiro := &model.JiroNearest{}
+	if err := json.NewDecoder(r.Body).Decode(&nearestJiro); err != nil {
+		return http.StatusBadRequest, nil, err
+	}
+
+	jiroService := service.NewJiroService(j.dbx)
+	jiro, err := jiroService.Nearest(*nearestJiro)
+	if err != nil {
+		return http.StatusInternalServerError, nil, err
+	}
+
+	return http.StatusOK, jiro, nil
 }

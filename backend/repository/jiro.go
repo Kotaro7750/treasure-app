@@ -22,3 +22,13 @@ SELECT jiro.id, jiro.name, jiro.address, detail,status.name AS status FROM jiro 
 	}
 	return &j, nil
 }
+
+func NearestJiro(db *sqlx.DB, position string) (*model.Jiro, error) {
+	j := model.Jiro{}
+	if err := db.Get(&j, `
+SELECT jiro.id, jiro.name, jiro.address, status.name AS status FROM jiro INNER JOIN status ON jiro.status = status.id WHERE jiro.name = ?
+`, "ラーメン二郎三田本店"); err != nil {
+		return nil, err
+	}
+	return &j, nil
+}

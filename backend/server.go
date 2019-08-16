@@ -98,6 +98,7 @@ func (s *Server) Route() *mux.Router {
 	//二郎
 	r.Methods(http.MethodGet).Path("/jiros").Handler(commonChain.Then(AppHandler{jiroController.Index}))
 	r.Methods(http.MethodGet).Path("/jiros/{id}").Handler(commonChain.Then(AppHandler{jiroController.Show}))
+	r.Methods(http.MethodPost).Path("/jiros/nearest").Handler(authChain.Then(AppHandler{jiroController.Nearest}))
 
 	r.PathPrefix("").Handler(commonChain.Then(http.StripPrefix("/img", http.FileServer(http.Dir("./img")))))
 	return r

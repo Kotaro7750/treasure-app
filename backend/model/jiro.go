@@ -14,3 +14,9 @@ type JiroDetail struct {
 	Detail  string `db:"detail" json:"detail"`
 	Status  string `db:"status" json:"status"`
 }
+
+type JiroNearest struct {
+	Jiro  Jiro   `json:"jiro"`
+	Route string `json:"route"`
+	Position string `json:"position"`
+}
