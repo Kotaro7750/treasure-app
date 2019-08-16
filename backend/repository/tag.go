@@ -26,7 +26,7 @@ INSERT INTO tag (id, name) VALUES (?, ?)
 	return stmt.Exec(t.ID, t.Name)
 }
 
-func AppendTag(db *sqlx.Tx, articleID int64, tagID int64) (sql.Result, error) {
+func AppendTagToArticle(db *sqlx.Tx, articleID int64, tagID int64) (sql.Result, error) {
 	stmt, err := db.Prepare(`
 INSERT INTO article_tag (article_id, tag_id) VALUES (?, ?)
 `)

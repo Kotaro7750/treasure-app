@@ -10,10 +10,12 @@ type Article struct {
 type ArticleCreate struct {
 	Article Article `json:"article"`
 	Tags    []int64 `json:"tags"`
+	Jiro    int64   `json:"jiro"`
 }
 
 type ArticleDetail struct {
 	Article Article   `json:"article"`
 	Tag     []Tag     `json:"tag"`
 	Comment []Comment `json:"comment"`
+	Jiro    Jiro      `json:"jiro"`
 }

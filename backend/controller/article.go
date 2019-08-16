@@ -55,6 +55,8 @@ func (a *Article) Show(w http.ResponseWriter, r *http.Request) (int, interface{}
 
 func (a *Article) Create(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
 	newArticle := &model.ArticleCreate{}
+	//UNSIGNED制約を付けているのでこうすれば指定されないとみなせる
+	newArticle.Jiro = -1
 	if err := json.NewDecoder(r.Body).Decode(&newArticle); err != nil {
 		return http.StatusBadRequest, nil, err
 	}

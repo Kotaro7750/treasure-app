@@ -27,7 +27,10 @@ req-articles-get:
 	curl -v $(HOST):$(PORT)/articles/$(ARTICLE_ID)
 
 req-articles-post:
-	curl -v -XPOST -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles -d '{"article":{"title": "$(ARTICLE_TITLE)", "body": "$(ARTICLE_BODY)"},"tags":[1,2]}'
+	curl -v -XPOST -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles -d '{"article":{"title": "$(ARTICLE_TITLE)", "body": "$(ARTICLE_BODY)"},"tags":[1,2],"jiro":2}'
+
+req-articles-post-light:
+	curl -v -XPOST -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles -d '{"article":{"title": "$(ARTICLE_TITLE)", "body": "$(ARTICLE_BODY)"}}'
 
 req-articles-update:
 	curl -v -XPUT -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles/$(ARTICLE_ID) -d '{"title": "$(ARTICLE_TITLE)", "body": "$(ARTICLE_BODY)"}'
