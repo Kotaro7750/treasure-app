@@ -13,4 +13,5 @@ CREATE TABLE comment
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- +goose Down
+DELETE FROM comment;
 DROP TABLE comment;

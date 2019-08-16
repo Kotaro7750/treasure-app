@@ -12,4 +12,5 @@ CREATE TABLE user (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- +goose Down
+DELETE FROM user;
 DROP TABLE user;
