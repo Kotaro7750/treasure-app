@@ -8,8 +8,6 @@ CREATE TABLE tag
     PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-INSERT INTO tag (name) VALUES("go");
-INSERT INTO tag (name) VALUES("mysql");
 
 CREATE TABLE article_tag 
 (

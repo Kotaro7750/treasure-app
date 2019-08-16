@@ -81,6 +81,7 @@ func (s *Server) Route() *mux.Router {
 
 	articleController := controller.NewArticle(s.dbx)
 	commentController := controller.NewComment(s.dbx)
+	tagController := controller.NewTag(s.dbx)
 	jiroController := controller.NewJiro(s.dbx)
 	//記事
 	r.Methods(http.MethodPost).Path("/articles").Handler(authChain.Then(AppHandler{articleController.Create}))
@@ -91,7 +92,9 @@ func (s *Server) Route() *mux.Router {
 	//コメント
 	r.Methods(http.MethodPost).Path("/articles/{article_id}/comments").Handler(authChain.Then(AppHandler{commentController.Create}))
 	//タグ
-	r.Methods(http.MethodGet).Path("/articles/tag/{tag_id}").Handler(commonChain.Then(AppHandler{articleController.IndexByTag}))
+	r.Methods(http.MethodGet).Path("/tags").Handler(commonChain.Then(AppHandler{tagController.Index}))
+	r.Methods(http.MethodGet).Path("/articles/tags/{tag_id}").Handler(commonChain.Then(AppHandler{articleController.IndexByTag}))
+	r.Methods(http.MethodPost).Path("/tags").Handler(authChain.Then(AppHandler{tagController.Create}))
 	//二郎
 	r.Methods(http.MethodGet).Path("/jiros").Handler(commonChain.Then(AppHandler{jiroController.Index}))
 	r.Methods(http.MethodGet).Path("/jiros/{id}").Handler(commonChain.Then(AppHandler{jiroController.Show}))

@@ -7,7 +7,7 @@ type Jiro struct {
 	Status  string `db:"status" json:"status"`
 }
 
-type DetailedJiro struct {
+type JiroDetail struct {
 	ID      int64  `db:"id" json:"id"`
 	Name    string `db:"name" json:"name"`
 	Address string `db:"address" json:"address"`

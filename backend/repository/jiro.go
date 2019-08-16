@@ -13,8 +13,8 @@ func AllJiro(db *sqlx.DB) ([]model.Jiro, error) {
 	return j, nil
 }
 
-func FindJiro(db *sqlx.DB, id int64) (*model.DetailedJiro, error) {
-	j := model.DetailedJiro{}
+func FindJiro(db *sqlx.DB, id int64) (*model.JiroDetail, error) {
+	j := model.JiroDetail{}
 	if err := db.Get(&j, `
 SELECT jiro.id, jiro.name, jiro.address, detail,status.name AS status FROM jiro INNER JOIN status ON jiro.status = status.id WHERE jiro.id = ?
 `, id); err != nil {
