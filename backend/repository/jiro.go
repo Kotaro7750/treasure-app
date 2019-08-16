@@ -65,3 +65,15 @@ WHERE article_id = ?
 
 	return &j, nil
 }
+
+func DestroyArticleJiroIntermediate(db *sqlx.Tx, articleID int64) (sql.Result, error) {
+	stmt, err := db.Prepare(`
+DELETE FROM article_jiro WHERE article_id = ?
+`)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	return stmt.Exec(articleID)
+
+}

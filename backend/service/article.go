@@ -73,6 +73,43 @@ func (a *Article) Destroy(id int64) error {
 	if err != nil {
 		return errors.Wrap(err, "failed find article")
 	}
+	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
+		_, err := repository.DestroyArticleTagIntermediate(tx, id)
+		if err != nil {
+			return err
+		}
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+		return err
+	}); err != nil {
+		return errors.Wrap(err, "failed article_tag delete transaction")
+	}
+
+	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
+		_, err := repository.DestroyArticleJiroIntermediate(tx, id)
+		if err != nil {
+			return err
+		}
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+		return err
+	}); err != nil {
+		return errors.Wrap(err, "failed article_jiro delete transaction")
+	}
+	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
+		_, err := repository.DestroyArticleComment(tx, id)
+		if err != nil {
+			return err
+		}
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+		return err
+	}); err != nil {
+		return errors.Wrap(err, "failed comment delete transaction")
+	}
 
 	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
 		_, err := repository.DestroyArticle(tx, id)

@@ -57,3 +57,14 @@ func FindTagOfArticle(db *sqlx.DB, articleID int64) ([]model.Tag, error) {
 	return tags, nil
 
 }
+
+func DestroyArticleTagIntermediate(db *sqlx.Tx, articleID int64) (sql.Result, error) {
+	stmt, err := db.Prepare(`
+DELETE FROM article_tag WHERE article_id = ?
+`)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	return stmt.Exec(articleID)
+}

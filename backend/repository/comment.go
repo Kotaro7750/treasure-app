@@ -38,3 +38,15 @@ func FindCommentOfArticle(db *sqlx.DB, articleID int64) ([]model.Comment, error)
 	return comments, nil
 
 }
+
+func DestroyArticleComment(db *sqlx.Tx, articleID int64) (sql.Result, error) {
+	stmt, err := db.Prepare(`
+DELETE FROM comment WHERE article_id = ?
+`)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	return stmt.Exec(articleID)
+
+}
