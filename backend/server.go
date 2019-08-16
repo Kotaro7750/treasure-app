@@ -83,7 +83,7 @@ func (s *Server) Route() *mux.Router {
 	commentController := controller.NewComment(s.dbx)
 	tagController := controller.NewTag(s.dbx)
 	jiroController := controller.NewJiro(s.dbx)
-	//記事。UPDATEとDESTROYは未完成
+	//記事。UPDATEは未完成
 	r.Methods(http.MethodPost).Path("/articles").Handler(authChain.Then(AppHandler{articleController.Create}))
 	r.Methods(http.MethodPut).Path("/articles/{id}").Handler(authChain.Then(AppHandler{articleController.Update}))
 	r.Methods(http.MethodDelete).Path("/articles/{id}").Handler(authChain.Then(AppHandler{articleController.Destroy}))

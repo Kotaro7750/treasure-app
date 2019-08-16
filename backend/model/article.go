@@ -7,7 +7,7 @@ type Article struct {
 	Body   string `db:"body" json:"body"`
 }
 
-type ArticleCreate struct {
+type ArticlePost struct {
 	Article Article `json:"article"`
 	Tags    []int64 `json:"tags"`
 	Jiro    int64   `json:"jiro"`

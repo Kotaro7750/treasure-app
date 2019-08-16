@@ -20,6 +20,7 @@ CREATE TABLE article_jiro
     ctime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     utime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
+    UNIQUE (article_id,jiro_id),
     CONSTRAINT article_jiro_fk_jiro FOREIGN KEY(jiro_id) REFERENCES jiro(id),
     CONSTRAINT article_jiro_fk_article FOREIGN KEY(article_id) REFERENCES article(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

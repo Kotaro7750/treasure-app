@@ -18,6 +18,7 @@ CREATE TABLE article_tag
     ctime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     utime TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (id),
+    UNIQUE (tag_id,article_id),
     CONSTRAINT article_tag_fk_tag FOREIGN KEY(tag_id) REFERENCES tag(id),
     CONSTRAINT article_tag_fk_article FOREIGN KEY(article_id) REFERENCES article(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

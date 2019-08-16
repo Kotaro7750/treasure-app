@@ -47,14 +47,14 @@ func (a *Article) Show(articleID int64) (*model.ArticleDetail, error) {
 	return &articleDetail, nil
 }
 
-func (a *Article) Update(id int64, newArticle *model.Article) error {
+func (a *Article) Update(id int64, newArticle *model.ArticlePost) error {
 	_, err := repository.FindArticle(a.db, id)
 	if err != nil {
 		return errors.Wrap(err, "failed find article")
 	}
 
 	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
-		_, err := repository.UpdateArticle(tx, id, newArticle)
+		_, err := repository.UpdateArticle(tx, id, &newArticle.Article)
 		if err != nil {
 			return err
 		}
@@ -65,6 +65,63 @@ func (a *Article) Update(id int64, newArticle *model.Article) error {
 	}); err != nil {
 		return errors.Wrap(err, "failed article update transaction")
 	}
+
+	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
+		_, err := repository.DestroyArticleJiroIntermediate(tx, id)
+		if err != nil {
+			return err
+		}
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+		return err
+	}); err != nil {
+		return errors.Wrap(err, "failed article_jiro delete transaction")
+	}
+
+	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
+		_, err = repository.AppendJiroToArticle(tx, id, newArticle.Jiro)
+		if err != nil {
+			return err
+		}
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+		return err
+	}); err != nil {
+		return errors.Wrap(err, "failed article_jiro append transaction")
+	}
+
+	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
+		_, err := repository.DestroyArticleTagIntermediate(tx, id)
+		if err != nil {
+			return err
+		}
+
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "failed article_tag delete transaction")
+	}
+
+	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
+		for _, tagID := range newArticle.Tags {
+			_, err := repository.AppendTagToArticle(tx, id, tagID)
+			if err != nil {
+				return err
+			}
+
+		}
+		if err := tx.Commit(); err != nil {
+			return err
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "failed article_tag append transaction")
+	}
+
 	return nil
 }
 
@@ -126,7 +183,7 @@ func (a *Article) Destroy(id int64) error {
 	return nil
 }
 
-func (a *Article) Create(newArticle *model.ArticleCreate) (int64, error) {
+func (a *Article) Create(newArticle *model.ArticlePost) (int64, error) {
 	var createdId int64
 	if err := dbutil.TXHandler(a.db, func(tx *sqlx.Tx) error {
 		result, err := repository.CreateArticle(tx, &newArticle.Article)

@@ -54,7 +54,7 @@ func (a *Article) Show(w http.ResponseWriter, r *http.Request) (int, interface{}
 }
 
 func (a *Article) Create(w http.ResponseWriter, r *http.Request) (int, interface{}, error) {
-	newArticle := &model.ArticleCreate{}
+	newArticle := &model.ArticlePost{}
 	//UNSIGNED制約を付けているのでこうすれば指定されないとみなせる
 	newArticle.Jiro = -1
 	if err := json.NewDecoder(r.Body).Decode(&newArticle); err != nil {
@@ -89,7 +89,7 @@ func (a *Article) Update(w http.ResponseWriter, r *http.Request) (int, interface
 		return http.StatusBadRequest, nil, err
 	}
 
-	reqArticle := &model.Article{}
+	reqArticle := &model.ArticlePost{}
 	if err := json.NewDecoder(r.Body).Decode(&reqArticle); err != nil {
 		return http.StatusBadRequest, nil, err
 	}
