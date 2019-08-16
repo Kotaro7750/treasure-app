@@ -9,6 +9,8 @@ ARTICLE_ID:=1
 ARTICLE_TITLE:=title
 ARTICLE_BODY:=body
 
+JIRO_ID:=1
+
 TAG_ID:=1
 
 create-token:
@@ -38,6 +40,8 @@ req-comments-post:
 req-tag-get:
 	curl -v $(HOST):$(PORT)/articles/tag/$(TAG_ID)
 
+req-jiro-get:
+	curl -v $(HOST):$(PORT)/jiros/$(JIRO_ID)
 
 req-public:
 	curl -v $(HOST):$(PORT)/public
