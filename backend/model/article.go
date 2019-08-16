@@ -7,6 +7,11 @@ type Article struct {
 	Body   string `db:"body" json:"body"`
 }
 
+type ArticleCreate struct {
+	Article Article `json:"article"`
+	Tags    []int64 `json:"tags"`
+}
+
 type ArticleDetail struct {
 	Article Article   `json:"article"`
 	Tag     []string  `json:"tag"`

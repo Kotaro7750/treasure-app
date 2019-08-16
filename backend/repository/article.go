@@ -57,6 +57,17 @@ INSERT INTO article (title, body, user_id) VALUES (?, ?, ?)
 	return stmt.Exec(a.Title, a.Body, a.UserID)
 }
 
+func AppendTag(db *sqlx.Tx,articleID int64, tagID int64) (sql.Result, error) {
+	stmt, err := db.Prepare(`
+INSERT INTO article_tag (article_id, tag_id) VALUES (?, ?)
+`)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+	return stmt.Exec(articleID,tagID)
+}
+
 func UpdateArticle(db *sqlx.Tx, id int64, a *model.Article) (sql.Result, error) {
 	stmt, err := db.Prepare(`
 UPDATE article SET title = ?, body = ? WHERE id = ?
