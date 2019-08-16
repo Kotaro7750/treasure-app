@@ -112,8 +112,8 @@ func (a *Article) Update(id int64, newArticle *model.ArticlePost) error {
 			if err != nil {
 				return err
 			}
-
 		}
+
 		if err := tx.Commit(); err != nil {
 			return err
 		}

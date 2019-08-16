@@ -8,6 +8,8 @@ TOKEN_FILE := .idToken
 ARTICLE_ID:=1
 ARTICLE_TITLE:=title
 ARTICLE_BODY:=body
+ARTICLE_UPDATE_TITLE:=updated_title
+ARTICLE_UPDATE_BODY:=updated_body
 
 JIRO_ID:=1
 
@@ -33,7 +35,7 @@ req-articles-post-light:
 	curl -v -XPOST -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles -d '{"article":{"title": "$(ARTICLE_TITLE)", "body": "$(ARTICLE_BODY)"}}'
 
 req-articles-update:
-	curl -v -XPUT -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles/$(ARTICLE_ID) -d '{"title": "$(ARTICLE_TITLE)", "body": "$(ARTICLE_BODY)"}'
+	curl -v -XPUT -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles/$(ARTICLE_ID) -d '{"article":{"title": "$(ARTICLE_UPDATE_TITLE)", "body": "$(ARTICLE_UPDATE_BODY)"},"tags":[1],"jiro":1}'
 
 req-articles-delete:
 	curl -v -XDELETE -H "Authorization: Bearer $(shell cat ./$(TOKEN_FILE))" $(HOST):$(PORT)/articles/$(ARTICLE_ID)
