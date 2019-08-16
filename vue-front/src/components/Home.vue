@@ -22,8 +22,13 @@
 
     <button v-on:click="logout">Logout</button>
 
-    <Article v-bind:article="article" />
-    <Comment v-for="comment in comments" v-bind:key="comment.user_id" v-bind:comment="comment" />
+    <h1>記事</h1>
+    <Article v-bind:article="article" v-bind:tags="tags" />
+
+    <dir v-if="comments.length != 0">
+      <h1>コメント</h1>
+      <Comment v-for="comment in comments" v-bind:key="comment.id" v-bind:comment="comment" />
+    </dir>
   </div>
 </template>
 
@@ -52,7 +57,8 @@ export default {
         title: "",
         body: ""
       },
-      comments: [{ id: -1, user_id: -1, body: "default" }]
+      comments: [],
+      tags: [{ id: 0, name: "なし" }]
     };
   },
   created() {
@@ -91,8 +97,9 @@ export default {
         .then(resp => {
           this.article.title = resp.article.title;
           this.article.body = resp.article.body;
-          this.state.message = resp.comment;
-          this.appendComment(resp.comment);
+          this.tags = resp.tag;
+          this.comments = resp.comment;
+          //this.appendComment(resp.comment);
         })
         .catch(error => {
           this.state.errorMessage = error.toString();
@@ -114,21 +121,8 @@ export default {
         .catch(error => {
           this.state.errorMessage = error.toString();
         });
-    },
-    //comment
-    appendComment: function(comments) {
-      try {
-        let commentsJSON = JSON.parse(comments);
-
-        this.comments = [];
-
-        for (let i = 0, len = commentsJSON.length; i < len; i++) {
-          this.comments.push(commentsJSON[i]);
-        }
-      } catch (error) {
-        throw error;
-      }
     }
+    //comment
   }
 };
 </script>

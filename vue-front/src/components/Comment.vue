@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1>user_id:{{ comment.user_id }}</h1>
-    <h1>body:{{ comment.body }}</h1>
+    <h2>ユーザ:{{ comment.user_id }}</h2>
+    <h2>内容:{{ comment.body }}</h2>
   </div>
 </template>
 
@@ -10,7 +10,7 @@
 export default {
   props: {
     comment: {
-      default: () => ({ user_id: 0, body: "default body" })
+      default: () => [{ user_id: 0, body: "default body" }]
     }
   }
 };
