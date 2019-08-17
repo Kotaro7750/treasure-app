@@ -4,18 +4,21 @@
     <input type="text" v-model="newArticle.title" />
     <input type="text" v-model="newArticle.body" />
 
-    <div v-for="tag in tagList" :key="tag.id">
-      <input type="checkbox" :id="tag.id" v-bind:value="tag.id" v-model="selectedTag" />
-      <label :for="tag.id">{{tag.name}}</label>
-    </div>
+    <b-form-checkbox
+      v-for="tag in tagList"
+      :key="tag.id"
+      v-model="selectedTag"
+      :value="tag.id"
+      button
+      button-variant="warning"
+    >{{ tag.name}}</b-form-checkbox>
 
-    <select v-model="selectedJiro">
+    <b-form-select v-model="selectedJiro">
       <option value="-1">Please select one</option>
       <option v-for="jiro in jiroList" v-bind:key="jiro.id" v-bind:value="jiro.id">{{jiro.name}}</option>
-    </select>
+    </b-form-select>
 
-    <button v-on:click="createArticle">記事を作成する</button>
-    {{ tagList}}
+    <b-button variant="warning" v-on:click="createArticle">記事を作成する</b-button>
   </div>
 </template>
 

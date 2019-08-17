@@ -1,9 +1,9 @@
 <template>
   <div>
     <input type="number" v-model="article.id" />
-    <button v-on:click="showArticle">記事を見る</button>
+    <b-button variant="warning" v-on:click="showArticle">記事を見る</b-button>
 
-    <button v-on:click="getArticleList">記事一覧</button>
+    <b-button variant="warning" v-on:click="getArticleList">記事一覧</b-button>
 
     <ArticleDetail v-bind:article="article" v-if="state.isFocusedArticle" />
 
@@ -30,7 +30,6 @@ export default {
   data() {
     return {
       state: {
-        user: null,
         message: "",
         errorMessage: "",
         isFocusedArticle: false

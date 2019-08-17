@@ -69,15 +69,6 @@ export const getTagList = function () {
     })
 };
 
-export const getJiroList = function () {
-    return fetch(`${API_ENDPOINT}/jiros`).then(res => {
-        if (res.ok) {
-            return res.json();
-        } else {
-            throw Error(`${res.status}`)
-        }
-    })
-};
 
 export const createComment = function (idToken, article_id, body) {
     return fetch(`${API_ENDPOINT}/articles/` + article_id + `/comments`, {
@@ -94,4 +85,24 @@ export const createComment = function (idToken, article_id, body) {
             throw Error(`Request rejected with status ${res.status}`);
         }
     });
+};
+
+//jiro
+export const showJiro = function (jiro_id) {
+    return fetch(`${API_ENDPOINT}/jiros/` + jiro_id).then(res => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            throw Error(`${res.status}`)
+        }
+    })
+};
+export const getJiroList = function () {
+    return fetch(`${API_ENDPOINT}/jiros`).then(res => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            throw Error(`${res.status}`)
+        }
+    })
 };
