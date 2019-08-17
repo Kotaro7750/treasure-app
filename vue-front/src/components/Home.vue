@@ -9,8 +9,8 @@
           <b-nav-item v-on:click="login">ログイン</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav v-else>
-          <b-nav-item to="/articles/list">記事一覧</b-nav-item>
-          <b-nav-item :to="{ name: 'articleCreate', params: {state: state.user } }">記事作成</b-nav-item>
+          <b-nav-item :to="{ name: 'articleList' ,params: {user:state.user } }">記事一覧</b-nav-item>
+          <b-nav-item :to="{ name: 'articleCreate', params: {user: state.user } }">記事作成</b-nav-item>
           <b-nav-item v-on:click="logout">ログアウト</b-nav-item>
         </b-navbar-nav>
       </b-collapse>

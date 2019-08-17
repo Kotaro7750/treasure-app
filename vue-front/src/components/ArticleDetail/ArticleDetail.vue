@@ -1,6 +1,10 @@
 <template>
   <div>
-    <Article v-bind:article="article.content" v-bind:tags="article.tags" />
+    <Article
+      v-bind:article="article.content"
+      v-bind:tags="article.tags"
+      v-bind:jiro="article.jiro"
+    />
 
     <div v-if="article.comments.length != 0">
       <h3>コメント</h3>

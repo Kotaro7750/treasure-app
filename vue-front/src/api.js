@@ -32,14 +32,14 @@ export const showArticle = function (article_id) {
     })
 };
 
-export const createArticle = function (idToken, title, body) {
+export const createArticle = function (idToken, title, body, tags, jiro) {
     return fetch(`${API_ENDPOINT}/articles`, {
         method: "POST",
         headers: new Headers({
             Authorization: `Bearer ${idToken}`
         }),
         credentials: "same-origin",
-        body: JSON.stringify({ article: { title: title, body: body } }),
+        body: JSON.stringify({ article: { title: title, body: body }, tags: tags, jiro: jiro }),
     }).then(res => {
         if (res.ok) {
             return res.json();
@@ -57,4 +57,41 @@ export const getArticleList = function () {
             throw Error(`${res.status}`)
         }
     })
+};
+
+export const getTagList = function () {
+    return fetch(`${API_ENDPOINT}/tags`).then(res => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            throw Error(`${res.status}`)
+        }
+    })
+};
+
+export const getJiroList = function () {
+    return fetch(`${API_ENDPOINT}/jiros`).then(res => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            throw Error(`${res.status}`)
+        }
+    })
+};
+
+export const createComment = function (idToken, article_id, body) {
+    return fetch(`${API_ENDPOINT}/articles/` + article_id + `/comments`, {
+        method: "POST",
+        headers: new Headers({
+            Authorization: `Bearer ${idToken}`
+        }),
+        credentials: "same-origin",
+        body: JSON.stringify({ body: body }),
+    }).then(res => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            throw Error(`Request rejected with status ${res.status}`);
+        }
+    });
 };

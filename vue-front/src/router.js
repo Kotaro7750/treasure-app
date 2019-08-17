@@ -18,7 +18,8 @@ export default new Router({
         {
             path: '/articles/list',
             name: 'articleList',
-            component: ArticleList
+            component: ArticleList,
+            props: true
         },
         {
             path: '/articles/create',
