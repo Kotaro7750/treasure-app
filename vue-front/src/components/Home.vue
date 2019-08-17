@@ -9,6 +9,8 @@
           <b-nav-item v-on:click="login">ログイン</b-nav-item>
         </b-navbar-nav>
         <b-navbar-nav v-else>
+          <b-nav-item to="/articles/list">記事一覧</b-nav-item>
+          <b-nav-item :to="{ name: 'articleCreate', params: {state: state.user } }">記事作成</b-nav-item>
           <b-nav-item v-on:click="logout">ログアウト</b-nav-item>
         </b-navbar-nav>
       </b-collapse>
@@ -31,42 +33,17 @@
       <div>{{state.message}}</div>
 
       <p style="color:red;">{{state.errorMessage}}</p>
-      <button v-on:click="getPrivateMessage">認証情報</button>
 
-      <div>
-        <input type="number" v-model="article.id" />
-        <button v-on:click="showArticle">記事を見る</button>
-      </div>
-
-      <p>
-        <input type="text" v-model="newArticle.title" />
-        <input type="text" v-model="newArticle.body" />
-        <button v-on:click="createArticle">記事を作成する</button>
-      </p>
-
-      <button v-on:click="getArticleList">記事一覧</button>
-
-      <ArticleDetail v-bind:article="article" v-if="state.isFocusedArticle" />
-
-      <ArticleList v-bind:articles="article_list" v-else />
+      <router-view :authstate="state.user"></router-view>
     </div>
   </div>
 </template>
 
 <script>
 import firebase from "../firebase";
-import {
-  getPrivateMessage,
-  showArticle,
-  createArticle,
-  getArticleList
-} from "../api";
-
-import ArticleDetail from "./ArticleDetail/ArticleDetail.vue";
-import ArticleList from "./ArticleList.vue";
+import { getPrivateMessage } from "../api";
 
 export default {
-  components: { ArticleDetail, ArticleList },
   data() {
     return {
       state: {
@@ -74,20 +51,6 @@ export default {
         message: "",
         errorMessage: "",
         isFocusedArticle: false
-      },
-      article: {
-        content: {
-          id: 0,
-          title: "nothing",
-          body: "nothing"
-        },
-        comments: [],
-        tags: []
-      },
-      article_list: [],
-      newArticle: {
-        title: "",
-        body: ""
       }
     };
   },
@@ -120,48 +83,7 @@ export default {
     },
     logout: function() {
       firebase.logout();
-    },
-    //article
-    showArticle: function() {
-      showArticle(Number(this.article.id))
-        .then(resp => {
-          this.state.isFocusedArticle = true;
-          this.article.content = resp.article;
-          this.article.tags = resp.tag;
-          this.article.comments = resp.comment;
-        })
-        .catch(error => {
-          this.state.errorMessage = error.toString();
-        });
-    },
-    createArticle: function() {
-      this.state.user
-        .getIdToken()
-        .then(token => {
-          return createArticle(
-            token,
-            this.newArticle.title,
-            this.newArticle.body
-          );
-        })
-        .then(resp => {
-          this.state.message = resp;
-        })
-        .catch(error => {
-          this.state.errorMessage = error.toString();
-        });
-    },
-    getArticleList: function() {
-      getArticleList()
-        .then(resp => {
-          this.state.isFocusedArticle = false;
-          this.article_list = resp;
-        })
-        .catch(error => {
-          this.state.errorMessage = error.toString();
-        });
     }
-    //comment
   }
 };
 </script>

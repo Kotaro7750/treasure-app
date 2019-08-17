@@ -39,7 +39,7 @@ export const createArticle = function (idToken, title, body) {
             Authorization: `Bearer ${idToken}`
         }),
         credentials: "same-origin",
-        body: JSON.stringify({ title, body }),
+        body: JSON.stringify({ article: { title: title, body: body } }),
     }).then(res => {
         if (res.ok) {
             return res.json();
