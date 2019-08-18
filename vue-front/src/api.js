@@ -59,6 +59,22 @@ export const getArticleList = function () {
     })
 };
 
+export const deleteArticle = function (idToken, article_id) {
+    return fetch(`${API_ENDPOINT}/articles/` + article_id, {
+        method: "DELETE",
+        headers: new Headers({
+            Authorization: `Bearer ${idToken}`
+        }),
+        credentials: "same-origin",
+    }).then(res => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            throw Error(`Request rejected with status ${res.status}`);
+        }
+    });
+}
+
 export const getTagList = function () {
     return fetch(`${API_ENDPOINT}/tags`).then(res => {
         if (res.ok) {

@@ -8,6 +8,12 @@
       </b-input-group-append>
     </b-input-group>
 
+    <b-button
+      variant="danger"
+      v-on:click="deleteArticle"
+      v-if="state.isFocusedArticle"
+      class="offset-lg-4"
+    >記事を消す</b-button>
     <ArticleDetail v-bind:article="article" v-if="state.isFocusedArticle" />
 
     <p></p>
@@ -24,7 +30,12 @@
 </template>
 
 <script>
-import { showArticle, getArticleList, createComment } from "../api";
+import {
+  showArticle,
+  getArticleList,
+  createComment,
+  deleteArticle
+} from "../api";
 
 import ArticleDetail from "../components/ArticleDetail/ArticleDetail.vue";
 import ArticleList from "../components/ArticleList.vue";
@@ -63,6 +74,19 @@ export default {
           this.article.tags = resp.tag;
           this.article.comments = resp.comment;
           this.article.jiro = resp.jiro;
+        })
+        .catch(error => {
+          this.state.errorMessage = error.toString();
+        });
+    },
+    deleteArticle: function() {
+      this.user
+        .getIdToken()
+        .then(token => {
+          return deleteArticle(token, Number(this.article.id));
+        })
+        .then(() => {
+          this.getArticleList();
         })
         .catch(error => {
           this.state.errorMessage = error.toString();

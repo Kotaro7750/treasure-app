@@ -1,12 +1,15 @@
 <template>
   <div>
-    <input type="number" v-model="jiro.id" />
-    <b-button variant="warning" v-on:click="showJiro">二郎を見る</b-button>
+    <b-input-group prepend="二郎番号" class="col-lg-5 offset-lg-4">
+      <b-form-input type="number" v-model="jiro.id"></b-form-input>
+      <b-input-group-append>
+        <b-button variant="outline-warning" v-on:click="showJiro">二郎を見る</b-button>
+        <b-button variant="outline-warning" v-on:click="getJiroList">二郎一覧</b-button>
+        <b-button variant="outline-warning" v-on:click="nearestJiro">最寄りの二郎</b-button>
+      </b-input-group-append>
+    </b-input-group>
 
-    <b-button variant="warning" v-on:click="getJiroList">二郎一覧</b-button>
-
-    <b-button variant="warning" v-on:click="nearestJiro">最寄りの二郎</b-button>
-    <div v-if="nearest_route != ''">
+    <div v-if="nearest_route != ''" class="offset-lg-4">
       <h3>ルート</h3>
       {{this.nearest_route}}
     </div>
@@ -45,6 +48,7 @@ export default {
   methods: {
     //jiro
     showJiro: function() {
+      this.nearest_route = "";
       showJiro(Number(this.jiro.id))
         .then(resp => {
           this.state.isFocusedJiro = true;
@@ -55,6 +59,7 @@ export default {
         });
     },
     getJiroList: function() {
+      this.nearest_route = "";
       getJiroList()
         .then(resp => {
           this.state.isFocusedJiro = false;

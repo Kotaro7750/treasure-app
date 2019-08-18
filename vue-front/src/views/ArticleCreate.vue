@@ -1,24 +1,39 @@
 <template>
   <div>
     <p style="color:red;">{{errorMessage}}</p>
-    <input type="text" v-model="newArticle.title" />
-    <input type="text" v-model="newArticle.body" />
 
-    <b-form-checkbox
-      v-for="tag in tagList"
-      :key="tag.id"
-      v-model="selectedTag"
-      :value="tag.id"
-      button
-      button-variant="warning"
-    >{{ tag.name}}</b-form-checkbox>
+    <b-input-group prepend="記事タイトル" class="col-lg-5 offset-lg-4">
+      <b-form-input type="text" v-model="newArticle.title"></b-form-input>
+    </b-input-group>
+    <p></p>
+    <b-input-group prepend="記事内容" class="col-lg-5 offset-lg-4">
+      <b-form-input type="text" v-model="newArticle.body"></b-form-input>
+    </b-input-group>
+    <p></p>
 
-    <b-form-select v-model="selectedJiro">
-      <option value="-1">Please select one</option>
-      <option v-for="jiro in jiroList" v-bind:key="jiro.id" v-bind:value="jiro.id">{{jiro.name}}</option>
-    </b-form-select>
+    <b-input-group prepend="タグ" class="col-lg-5 offset-lg-4">
+      <b-form-checkbox
+        v-for="tag in tagList"
+        :key="tag.id"
+        v-model="selectedTag"
+        :value="tag.id"
+        button
+        button-variant="warning"
+      >{{ tag.name}}</b-form-checkbox>
+    </b-input-group>
 
-    <b-button variant="warning" v-on:click="createArticle">記事を作成する</b-button>
+    <p></p>
+    <b-input-group prepend="二郎" class="col-lg-5 offset-lg-4">
+      <b-form-select v-model="selectedJiro">
+        <option value="-1">なし</option>
+        <option v-for="jiro in jiroList" v-bind:key="jiro.id" v-bind:value="jiro.id">{{jiro.name}}</option>
+      </b-form-select>
+    </b-input-group>
+    <p></p>
+
+    <b-input-group class="col-lg-5 offset-lg-4">
+      <b-button variant="warning" v-on:click="createArticle">記事を作成する</b-button>
+    </b-input-group>
   </div>
 </template>
 
