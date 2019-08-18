@@ -1,9 +1,12 @@
 <template>
   <div>
-    <input type="number" v-model="article.id" />
-    <b-button variant="warning" v-on:click="showArticle">記事を見る</b-button>
-
-    <b-button variant="warning" v-on:click="getArticleList">記事一覧</b-button>
+    <b-input-group prepend="記事番号" class="col-lg-5 offset-lg-4">
+      <b-form-input type="number" v-model="article.id"></b-form-input>
+      <b-input-group-append>
+        <b-button variant="outline-warning" v-on:click="showArticle">記事を見る</b-button>
+        <b-button variant="outline-warning" v-on:click="getArticleList">記事一覧</b-button>
+      </b-input-group-append>
+    </b-input-group>
 
     <ArticleDetail v-bind:article="article" v-if="state.isFocusedArticle" />
 
@@ -79,6 +82,7 @@ export default {
           return createComment(token, this.article.id, this.comment_body);
         })
         .then(() => {
+          this.comment_body = "";
           this.showArticle(Number(this.article_id));
         })
         .catch(error => {

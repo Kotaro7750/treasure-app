@@ -1,16 +1,22 @@
 <template>
   <div>
-    <h2>タイトル</h2>
-    <div>{{ article.title }}</div>
+    <h6>{{article.user_id}}さんが投稿</h6>
+    <h1>
+      <b>
+        <u>{{ article.title }}</u>
+      </b>
+    </h1>
 
-    <h3>タグ</h3>
-    <li v-for="tag in tags" v-bind:key="tag.id">{{ tag.name }}</li>
+    <li v-for="tag in tags" v-bind:key="tag.id" class="tag">{{ tag.name }}</li>
 
-    <h3>二郎</h3>
+    <p></p>
 
-    {{ jiro.name }}
-    <h2>内容</h2>
-    <div>{{ article.body }}</div>
+    <h4>{{ jiro.name }}</h4>
+    <p></p>
+
+    <div>
+      <span id="body">{{ article.body }}</span>
+    </div>
   </div>
 </template>
 
@@ -29,3 +35,28 @@ export default {
   }
 };
 </script>
+
+<style>
+li {
+  display: inline-block;
+}
+
+.tag {
+  padding: 0.5em 0.5em;
+  margin: 0em 0.25em;
+  color: #000000; /*文字色*/
+  background: #fff;
+  border: solid 2px #ffc107; /*線*/
+  border-radius: 10px; /*角の丸み*/
+}
+
+#body {
+  display: block;
+  background-color: #ededed;
+  color: #000000; /*文字色*/
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+</style>

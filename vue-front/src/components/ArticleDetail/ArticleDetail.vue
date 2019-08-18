@@ -4,6 +4,7 @@
       v-bind:article="article.content"
       v-bind:tags="article.tags"
       v-bind:jiro="article.jiro"
+      class="offset-lg-3 col-lg-6"
     />
 
     <div v-if="article.comments.length != 0">

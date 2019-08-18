@@ -106,3 +106,20 @@ export const getJiroList = function () {
         }
     })
 };
+
+export const nearestJiro = function (idToken, position) {
+    return fetch(`${API_ENDPOINT}/jiros/nearest`, {
+        method: "POST",
+        headers: new Headers({
+            Authorization: `Bearer ${idToken}`
+        }),
+        credentials: "same-origin",
+        body: JSON.stringify({ position: position })
+    }).then(res => {
+        if (res.ok) {
+            return res.json();
+        } else {
+            throw Error(`Request rejected with status ${res.status}`);
+        }
+    });
+};
