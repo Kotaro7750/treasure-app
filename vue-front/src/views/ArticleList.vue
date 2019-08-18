@@ -10,10 +10,13 @@
 
     <ArticleDetail v-bind:article="article" v-if="state.isFocusedArticle" />
 
-    <div v-if="state.isFocusedArticle">
-      <h3>コメント</h3>
-      <input type="text" v-model="comment_body" />
-      <b-button variant="warning" v-on:click="createComment">コメントする</b-button>
+    <p></p>
+    <div v-if="state.isFocusedArticle" class="offset-lg-3">
+      <div>
+        <h3>コメント</h3>
+        <input type="text" v-model="comment_body" />
+        <b-button variant="warning" v-on:click="createComment">コメントする</b-button>
+      </div>
     </div>
 
     <ArticleList v-bind:articles="article_list" v-else />

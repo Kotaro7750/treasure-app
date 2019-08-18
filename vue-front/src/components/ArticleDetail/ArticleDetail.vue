@@ -7,7 +7,9 @@
       class="offset-lg-3 col-lg-6"
     />
 
-    <div v-if="article.comments.length != 0">
+    <p></p>
+
+    <div v-if="article.comments.length != 0" class="offset-lg-3 col-lg-6">
       <h3>コメント</h3>
       <Comment
         v-for="comment in article.comments"
